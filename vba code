@@ -1,0 +1,29 @@
+Sub ReadTextFileToCells()
+    Dim FilePath As String
+    Dim FileNum As Integer
+    Dim LineData As String
+    Dim RowNum As Long
+
+    ' Specify the path to the text file
+    FilePath = Application.GetOpenFilename("Text Files (*.txt), *.txt", , "Select Text File")
+    If FilePath = "False" Then Exit Sub ' Exit if no file is selected
+    
+    ' Open the file for reading
+    FileNum = FreeFile
+    Open FilePath For Input As FileNum
+
+    ' Start pasting data from row 1
+    RowNum = 1
+
+    ' Loop through each line in the text file
+    Do While Not EOF(FileNum)
+        Line Input #FileNum, LineData ' Read a line
+        Cells(RowNum, 1).Value = LineData ' Paste into the first column
+        RowNum = RowNum + 1 ' Move to the next row
+    Loop
+
+    ' Close the file
+    Close FileNum
+    
+    MsgBox "Text file content successfully pasted into the worksheet.", vbInformation
+End Sub
